@@ -47,14 +47,17 @@ const serverHandle = (req,res) => {
         req.body = postData
 
         // 处理blog路由
-        const blogData = handleBlogRouter(req,res)
-        if(blogData) {
-            res.end(
-                JSON.stringify(blogData)
-            )
-            return;
+        const blogResult = handleBlogRouter(req, res)
+        if (blogResult) {
+            blogResult.then(blogData => {
+                if(blogData) {
+                    res.end(
+                        JSON.stringify(blogData)
+                    )
+                }
+            })
+            return
         }
-
         // 处理登录路由
         const userData = handleUserRouter(req,res)
         if(userData) {
@@ -64,7 +67,7 @@ const serverHandle = (req,res) => {
             return
         }
 
-        // 为命中路由
+        // 未命中路由
         res.writeHead(404,{'Content-type':'text/plain'})
         res.write('404 not Found\n')
         res.end()
