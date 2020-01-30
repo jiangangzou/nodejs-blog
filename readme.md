@@ -21,3 +21,5 @@ mac os 使用brew install nvm  网站；brew.sh
 select * from blogs where title like '%标题%' order by createtime desc
 
 ---5-3
+redis启动
+redis-server.exe redis.windows.conf

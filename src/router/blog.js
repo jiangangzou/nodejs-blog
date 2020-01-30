@@ -11,7 +11,7 @@ const loginCheck = (req) => {
 }
 
 const handleBlogRouter = (req,res) => {
-    const method = req.method  //GET POST
+    let method = req.method  //GET POST
     const id = req.query.id
 // console.log|(url)
 
@@ -24,6 +24,17 @@ const handleBlogRouter = (req,res) => {
     if(method === 'GET' && req.path === '/api/blog/list') {
         const author = req.query.author || ''
         const keyword = req.query.keyword || ''
+
+        if (req.query.isadmin) {
+            // 管理员界面
+            const loginCheckResult = loginCheck(req)
+            if (loginCheckResult) {
+                // 未登录
+                return loginCheckResult
+            }
+
+            author = req.session.username
+        }
         // const listData = getList(author,keyword)
         // return new SuccessModel(listData)
         const result = getList(author, keyword)
